@@ -1,4 +1,3 @@
-// src/routes/+page.svelte
 <script lang="ts">
     import {onMount, onDestroy} from 'svelte';
     import {browser} from '$app/environment';
@@ -13,13 +12,27 @@
     let customWorkTime: number = 25;
     let customBreakTime: number = 5;
 
-    $: ({timer, isRunning, isBreak} = $pomodoroStore);
+    let audio = {
+        work: null as HTMLAudioElement | null,
+        break: null as HTMLAudioElement | null
+    };
+
+    $: ({timer, isRunning, isBreak, justTransitioned} = $pomodoroStore);
 
     onMount(() => {
         if (browser) {
             userName = localStorage.getItem('userName') || 'User';
+            // Initialize audio elements
+            audio.work = new Audio('/sounds/work-start.mp3');
+            audio.break = new Audio('/sounds/break-start.mp3');
         }
     });
+
+    // Watch for transitions and play sounds
+    $: if (justTransitioned) {
+        const soundToPlay = isBreak ? audio.break : audio.work;
+        soundToPlay?.play().catch(error => console.error('Error playing sound:', error));
+    }
 
     const startTimer = () => {
         if (!isRunning) {
@@ -75,4 +88,14 @@
             bind:breakTime={customBreakTime}
             on:save={handleCustomTimings}
     />
+
+    <!-- Hidden audio elements -->
+    <div class="hidden" aria-hidden="true">
+        <audio id="workSound" preload="auto">
+            <source src="/sounds/work-start.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="breakSound" preload="auto">
+            <source src="/sounds/break-start.mp3" type="audio/mpeg">
+        </audio>
+    </div>
 </div>
