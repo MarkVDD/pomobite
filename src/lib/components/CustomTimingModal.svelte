@@ -16,7 +16,7 @@
 {#if show}
     <div class="fixed inset-0 backdrop-blur-sm flex justify-center items-center z-50">
         <div class="bg-zinc-900 p-6 rounded-lg border border-white/10 w-96">
-            <h2 class="text-xl font-light text-white/90 mb-4">Custom Timings</h2>
+            <h2 class="text-xl font-light text-white/90 mb-4 font-bold">Custom Timings</h2>
             <div class="flex flex-col gap-4">
                 <div>
                     <label for="workTime" class="text-white/70 text-sm">Work Time (minutes)</label>

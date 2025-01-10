@@ -1,4 +1,5 @@
 import {writable} from 'svelte/store';
+import {sendNotification} from "$lib/utils/notification";
 
 interface PomodoroSettings {
     workTime: number;
@@ -9,7 +10,6 @@ interface PomodoroState {
     timer: number;
     isRunning: boolean;
     isBreak: boolean;
-    justTransitioned: boolean;
     settings: PomodoroSettings;
 }
 
@@ -23,7 +23,6 @@ const createPomodoroStore = () => {
         timer: defaultSettings.workTime,
         isRunning: false,
         isBreak: false,
-        justTransitioned: false,
         settings: defaultSettings
     };
 
@@ -42,27 +41,36 @@ const createPomodoroStore = () => {
                 ...state,
                 timer: state.settings.workTime,
                 isBreak: false,
-                isRunning: false,
-                justTransitioned: false
+                isRunning: false
             }));
         },
         updateTimer: () => {
             update(state => {
                 if (state.timer <= 0) {
                     const isBreak = !state.isBreak;
+
+                    if (isBreak) {
+                        sendNotification("Time for a break! 🎉", {
+                            body: "Good job! Take some time to rest.",
+                            icon: "/favicon.png",
+                            silent: false
+                        });
+                    } else {
+                        sendNotification("Break's over! 💪", {
+                            body: "Let's get back to work!",
+                            icon: "/favicon.png",
+                            silent: false
+                        });
+                    }
+
                     return {
                         ...state,
                         isBreak,
                         timer: isBreak ? state.settings.breakTime : state.settings.workTime,
-                        isRunning: false,
-                        justTransitioned: true
+                        isRunning: false
                     };
                 }
-                return {
-                    ...state,
-                    timer: state.timer - 1,
-                    justTransitioned: false
-                };
+                return {...state, timer: state.timer - 1};
             });
         },
         updateSettings: (newSettings: PomodoroSettings) => {
@@ -71,8 +79,7 @@ const createPomodoroStore = () => {
                 settings: newSettings,
                 timer: newSettings.workTime,
                 isBreak: false,
-                isRunning: false,
-                justTransitioned: false
+                isRunning: false
             }));
         }
     };

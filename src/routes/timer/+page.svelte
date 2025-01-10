@@ -5,18 +5,24 @@
     import TimerDisplay from '$lib/components/TimerDisplay.svelte';
     import TimerControls from '$lib/components/TimerControls.svelte';
     import CustomTimingModal from '$lib/components/CustomTimingModal.svelte';
+    import userName from '$lib/stores/userName';
+    import {requestNotificationPermission} from "$lib/utils/notification";
 
-    let userName: string = 'User';
     let showModal: boolean = false;
     let intervalId: ReturnType<typeof setInterval> | null = null;
     let customWorkTime: number = 25;
     let customBreakTime: number = 5;
+    let notificationsEnabled = false;
 
     $: ({timer, isRunning, isBreak} = $pomodoroStore);
 
-    onMount(() => {
+    onMount(async () => {
+        if (!$userName) {
+            goto('/');
+        }
+
         if (browser) {
-            userName = localStorage.getItem('userName') || 'User';
+            notificationsEnabled = await requestNotificationPermission();
         }
     });
 
@@ -52,26 +58,35 @@
     });
 </script>
 
-<div class="flex flex-col items-center justify-center min-h-screen bg-black">
-    <h1 class="text-3xl font-light text-white/90">Hello, {userName}</h1>
+<h1 class="text-3xl font-light text-white/90">Hello, {$userName}!</h1>
+<p class="mt-4 text-lg text-white/70">
+    {isBreak ? "It's break time!" : "It's work time!"}
+</p>
 
-    <TimerDisplay time={timer}/>
+<TimerDisplay time={timer}/>
 
-    <TimerControls
-            onStart={startTimer}
-            onStop={stopTimer}
-            onReset={() => pomodoroStore.resetTimer()}
-            onCustomize={() => showModal = true}
-    />
+<TimerControls
+        onStart={startTimer}
+        onStop={stopTimer}
+        onReset={() => pomodoroStore.resetTimer()}
+        onCustomize={() => showModal = true}
+/>
 
-    <p class="mt-4 text-lg text-white/70">
-        {isBreak ? "It's break time!" : "It's work time!"}
-    </p>
+<CustomTimingModal
+        bind:show={showModal}
+        bind:workTime={customWorkTime}
+        bind:breakTime={customBreakTime}
+        on:save={handleCustomTimings}
+/>
 
-    <CustomTimingModal
-            bind:show={showModal}
-            bind:workTime={customWorkTime}
-            bind:breakTime={customBreakTime}
-            on:save={handleCustomTimings}
-    />
-</div>
+{#if !notificationsEnabled}
+    <div class="fixed bottom-4 right-4 p-4 bg-zinc-800 border border-white/10 rounded-lg text-white/70">
+        <p>Enable notifications for break reminders</p>
+        <button
+                class="mt-2 text-white/90 underline hover:no-underline"
+                on:click={() => requestNotificationPermission()}
+        >
+            Enable
+        </button>
+    </div>
+{/if}

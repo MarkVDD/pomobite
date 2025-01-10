@@ -1,78 +1,40 @@
-// src/routes/+page.svelte
 <script lang="ts">
-    import {onMount, onDestroy} from 'svelte';
-    import {browser} from '$app/environment';
-    import {pomodoroStore} from '$lib/stores/pomodoro';
-    import TimerDisplay from '$lib/components/TimerDisplay.svelte';
-    import TimerControls from '$lib/components/TimerControls.svelte';
-    import CustomTimingModal from '$lib/components/CustomTimingModal.svelte';
-
-    let userName: string = 'User';
-    let showModal: boolean = false;
-    let intervalId: ReturnType<typeof setInterval> | null = null;
-    let customWorkTime: number = 25;
-    let customBreakTime: number = 5;
-
-    $: ({timer, isRunning, isBreak} = $pomodoroStore);
+    import {onMount} from 'svelte';
+    import {goto} from '$app/navigation';
+    import userName from '$lib/stores/userName';
 
     onMount(() => {
-        if (browser) {
-            userName = localStorage.getItem('userName') || 'User';
+        if ($userName?.trim()) {
+            goto('/timer');
         }
     });
 
-    const startTimer = () => {
-        if (!isRunning) {
-            pomodoroStore.startTimer();
-            intervalId = setInterval(() => {
-                pomodoroStore.updateTimer();
-            }, 1000);
+    function handleNext() {
+        const name = $userName?.trim();
+        if (name) {
+            goto('/timer');
         }
-    };
+    }
 
-    const stopTimer = () => {
-        if (intervalId) {
-            clearInterval(intervalId);
-            intervalId = null;
-            pomodoroStore.stopTimer();
+    function handleKeyDown(event: KeyboardEvent) {
+        if (event.key === 'Enter') {
+            handleNext();
         }
-    };
-
-    const handleCustomTimings = ({detail}: CustomEvent<{ workTime: number; breakTime: number }>) => {
-        const {workTime, breakTime} = detail;
-        pomodoroStore.updateSettings({
-            workTime: workTime * 60,
-            breakTime: breakTime * 60
-        });
-    };
-
-    onDestroy(() => {
-        if (intervalId) {
-            clearInterval(intervalId);
-        }
-    });
+    }
 </script>
 
-<div class="flex flex-col items-center justify-center min-h-screen bg-black">
-    <h1 class="text-3xl font-light text-white/90">Hello, {userName}</h1>
-
-    <TimerDisplay time={timer}/>
-
-    <TimerControls
-            onStart={startTimer}
-            onStop={stopTimer}
-            onReset={() => pomodoroStore.resetTimer()}
-            onCustomize={() => showModal = true}
-    />
-
-    <p class="mt-4 text-lg text-white/70">
-        {isBreak ? "It's break time!" : "It's work time!"}
-    </p>
-
-    <CustomTimingModal
-            bind:show={showModal}
-            bind:workTime={customWorkTime}
-            bind:breakTime={customBreakTime}
-            on:save={handleCustomTimings}
-    />
-</div>
+<h1 class="text-3xl font-light text-white/90">What's your name?</h1>
+<input
+        bind:value={$userName}
+        on:keydown={handleKeyDown}
+        class="mt-6 w-80 p-3 text-center text-lg bg-black border border-white/20 rounded
+               text-white/90 focus:outline-none focus:border-white/40 placeholder:text-white/40"
+        placeholder="Enter your name"
+/>
+<button
+        on:click={handleNext}
+        class="mt-6 flex items-center justify-center gap-2 px-6 py-3 border border-white/20
+               text-white/90 rounded hover:bg-white/5 transition-all duration-200"
+>
+    Next
+</button>
