@@ -7,6 +7,8 @@
     import CustomTimingModal from '$lib/components/CustomTimingModal.svelte';
     import userName from '$lib/stores/userName';
     import {requestNotificationPermission} from "$lib/utils/notification";
+    import {goto} from '$app/navigation';
+    import posthog from "posthog-js";
 
     let showModal: boolean = false;
     let intervalId: ReturnType<typeof setInterval> | null = null;
@@ -18,6 +20,7 @@
 
     onMount(async () => {
         if (!$userName) {
+            posthog.capture('Unauthorized Access', {page: 'Timer'});
             goto('/');
         }
 
@@ -28,6 +31,7 @@
 
     const startTimer = () => {
         if (!isRunning) {
+            posthog.capture('Timer Started', {timer, isBreak});
             pomodoroStore.startTimer();
             intervalId = setInterval(() => {
                 pomodoroStore.updateTimer();
@@ -39,6 +43,7 @@
         if (intervalId) {
             clearInterval(intervalId);
             intervalId = null;
+            posthog.capture('Timer Stopped', {timer, isBreak});
             pomodoroStore.stopTimer();
         }
     };
@@ -49,6 +54,7 @@
             workTime: workTime * 60,
             breakTime: breakTime * 60
         });
+        posthog.capture('Custom Timings Set', {workTime, breakTime});
     };
 
     onDestroy(() => {

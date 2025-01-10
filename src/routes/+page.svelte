@@ -2,8 +2,10 @@
     import {onMount} from 'svelte';
     import {goto} from '$app/navigation';
     import userName from '$lib/stores/userName';
+    import posthog from "posthog-js";
 
     onMount(() => {
+        posthog.capture('Page View', {page: 'Name Input'})
         if ($userName?.trim()) {
             goto('/timer');
         }
@@ -12,6 +14,8 @@
     function handleNext() {
         const name = $userName?.trim();
         if (name) {
+            posthog.capture('Name Entered', {name});
+            posthog.capture('Navigation', {from: 'Name Input', to: 'Timer'});
             goto('/timer');
         }
     }
