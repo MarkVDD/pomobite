@@ -1,7 +1,7 @@
-# Pomodoro Timer App
+# PomoBite App
 
 A simple and minimalistic Pomodoro Timer app built with Svelte. This app helps you manage your work and break intervals
-effectively, following the Pomodoro technique.
+effectively, following the Pomodoro technique and it's principles.
 
 ## Features
 
@@ -32,8 +32,8 @@ Follow these steps to set up and run the project locally:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/MarkVDD/pomodoro-timer-app.git
-   cd pomodoro-timer
+   git clone https://github.com/MarkVDD/pomobite.git
+   cd pomobite
    ```
 
 2. Install dependencies:
