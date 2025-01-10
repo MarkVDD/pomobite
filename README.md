@@ -1,57 +1,63 @@
----
-name: Vercel Postgres SvelteKit Starter
-slug: postgres-sveltekit
-description: Simple SvelteKit template that uses Vercel Postgres as the database.
-framework: Svelte
-useCase: Starter
-css: Tailwind
-database: Vercel Postgres
-deployUrl: https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fexamples%2Ftree%2Fmain%2Fstorage%2Fpostgres-sveltekit&project-name=postgres-sveltekit&repository-name=postgres-sveltekit&demo-title=Vercel%20Postgres%20Starter%sveltekit&demo-description=Simple%20Svelte.js%20template%20that%20uses%20Vercel%20Postgres%20as%20the%20database.&demo-url=https%3A%2F%2Fpostgres-sveltekit.vercel.app%2F&demo-image=https%3A%2F%2Fpostgres-starter.vercel.app%2Fopengraph-image.png&stores=%5B%7B"type"%3A"postgres"%7D%5D
-demoUrl: https://postgres-sveltekit.vercel.app/
-relatedTemplates:
-  - postgres-starter
-  - postgres-prisma
-  - postgres-kysely
----
+# Pomodoro Timer App
 
-# Vercel Postgres SvelteKit Starter
+A simple and minimalistic Pomodoro Timer app built with Svelte. This app helps you manage your work and break intervals
+effectively, following the Pomodoro technique.
 
-Simple SvelteKit template that uses [Vercel Postgres](https://vercel.com/postgres) as the database.
+## Features
 
-## Demo
+- Set custom work and break durations
+- Start, pause, and reset timers
+- Receive optional notifications for break reminders
+- Smooth navigation between screens
+- Clean and responsive user interface
 
-https://postgres-sveltekit.vercel.app/
+## Technologies Used
 
-## How to Use
+- **Svelte**: For the user interface and component-based development
+- **PostHog**: For event tracking and user behavior analysis (manually implemented on key events)
+- **Vite**: For fast development and build process
+- **TypeScript**: For type safety and better developer experience
 
-You can choose from one of the following two methods to use this repository:
+## Getting Started
 
-### One-Click Deploy
+Follow these steps to set up and run the project locally:
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=vercel-examples)
+### Prerequisites
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fexamples%2Ftree%2Fmain%2Fstorage%2Fpostgres-sveltekit&project-name=postgres-sveltekit&repository-name=postgres-sveltekit&demo-title=Vercel%20Postgres%20Next.js%Sveltekit&demo-description=Simple%20Next.js%20template%20that%20uses%20Vercel%20Postgres%20as%20the%20database.&demo-url=https%3A%2F%2Fpostgres-sveltekit.vercel.app%2F&demo-image=https%3A%2F%2Fpostgres-starter.vercel.app%2Fopengraph-image.png&stores=%5B%7B"type"%3A"postgres"%7D%5D)
+- [Node.js](https://nodejs.org/)
+- [pnpm](https://pnpm.io/)
+- [Git](https://git-scm.com/)
 
-### Clone and Deploy
+### Installation
 
-Execute the following command to download the example into the `my-project` folder:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/MarkVDD/pomodoro-timer-app.git
+   cd pomodoro-timer
+   ```
 
-```bash
-npx degit@latest https://github.com/vercel/examples/storage/postgres-sveltekit my-project
-```
+2. Install dependencies:
+   ```bash
+   pnpm install
+   ```
 
-Once you've created the project and installed dependencies with `pnpm install`, copy the `.env.example` file in this directory to `.env.local` (which will be ignored by Git). Then open `.env.local` and set the environment variables to match the ones in your Vercel Storage Dashboard.
+3. Run the app:
+   ```bash
+   pnpm dev
+   ```
 
-Alternatively, if you have setup a project already and you have installed the Vercel CLI, you can also pull the environment variables using the following command:
+4. Open your browser and navigate to `http://localhost:5173`.
 
-```bash
-vercel env pull .env.local
-```
+## Project Structure
 
-Next, run SvelteKit in development mode:
+- `src/lib/stores`: Contains the Svelte stores used for state management
+- `src/lib/components`: Reusable Svelte components like the timer display and controls
+- `src/routes`: Contains the pages of the application
+- `src/lib/utils`: Utility functions, e.g., for handling notifications
 
-```bash
-pnpm dev
-```
+## Acknowledgments
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=vercel-examples) ([Documentation](https://vercel.com/docs/frameworks/sveltekit)).
+- Inspired by the Pomodoro technique
+- Thanks to the Svelte and PostHog communities for their amazing tools
+
+Feel free to reach out if you have any questions or suggestions. Enjoy using the app!
