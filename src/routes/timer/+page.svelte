@@ -8,7 +8,6 @@
     import userName from '$lib/stores/userName';
     import {requestNotificationPermission} from "$lib/utils/notification";
     import {goto} from '$app/navigation';
-    import posthog from "posthog-js";
 
     let showModal: boolean = false;
     let customWorkTime: number = 25;
@@ -19,7 +18,6 @@
 
     onMount(async () => {
         if (!$userName) {
-            posthog.capture('Unauthorized Access (No username set)', {page: 'Timer'});
             goto('/');
             return;
         }
@@ -33,14 +31,12 @@
 
     const startTimer = () => {
         if (!isRunning) {
-            posthog.capture('Timer Started', {timer, isBreak});
             pomodoroStore.startTimer();
         }
     };
 
     const stopTimer = () => {
         if (isRunning) {
-            posthog.capture('Timer Stopped', {timer, isBreak});
             pomodoroStore.stopTimer();
         }
     };
@@ -51,7 +47,6 @@
             workTime: workTime * 60,
             breakTime: breakTime * 60
         });
-        posthog.capture('Custom Timings Set', {workTime, breakTime});
     };
 
     onDestroy(() => {

@@ -14,7 +14,7 @@ effectively, following the Pomodoro technique and it's principles.
 ## Technologies Used
 
 - **Svelte**: For the user interface and component-based development
-- **PostHog**: For event tracking and user behavior analysis (manually implemented on key events)
+- **CloudFlare Web Analytics**: For event tracking and user behavior analysis (manually implemented on key events)
 - **Vite**: For fast development and build process
 - **TypeScript**: For type safety and better developer experience
 
@@ -58,6 +58,6 @@ Follow these steps to set up and run the project locally:
 ## Acknowledgments
 
 - Inspired by the Pomodoro technique
-- Thanks to the Svelte and PostHog communities for their amazing tools
+- Thanks to the Svelte community for their amazing tools
 
 Feel free to reach out if you have any questions or suggestions. Enjoy using the app!

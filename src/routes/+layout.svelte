@@ -3,15 +3,8 @@
     import {pomodoroStore} from '$lib/stores/pomodoro';
     import {formatTime} from '$lib/utils/time';
     import {browser} from "$app/environment";
-    import {afterNavigate, beforeNavigate} from "$app/navigation";
-    import posthog from "posthog-js";
 
     let {children} = $props();
-
-    if (browser) {
-        beforeNavigate(() => posthog.capture('$pageleave'));
-        afterNavigate(() => posthog.capture('$pageview'));
-    }
 
     $effect(() => {
         if (browser) {
