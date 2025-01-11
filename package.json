@@ -26,6 +26,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@vercel/analytics": "^1.4.1",
     "dotenv": "^16.0.3",
     "lucide-svelte": "^0.471.0",
     "ms": "^2.1.3",

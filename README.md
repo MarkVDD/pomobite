@@ -14,7 +14,7 @@ effectively, following the Pomodoro technique and it's principles.
 ## Technologies Used
 
 - **Svelte**: For the user interface and component-based development
-- **CloudFlare Web Analytics**: For event tracking and user behavior analysis (manually implemented on key events)
+- **Vercel Analytics**: For event tracking and user behavior analysis (manually implemented on key events)
 - **Vite**: For fast development and build process
 - **TypeScript**: For type safety and better developer experience
 
