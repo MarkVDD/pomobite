@@ -11,7 +11,6 @@
     import posthog from "posthog-js";
 
     let showModal: boolean = false;
-    let intervalId: ReturnType<typeof setInterval> | null = null;
     let customWorkTime: number = 25;
     let customBreakTime: number = 5;
     let notificationsEnabled = false;
@@ -20,29 +19,27 @@
 
     onMount(async () => {
         if (!$userName) {
-            posthog.capture('Unauthorized Access', {page: 'Timer'});
+            posthog.capture('Unauthorized Access (No username set)', {page: 'Timer'});
             goto('/');
+            return;
         }
 
         if (browser) {
             notificationsEnabled = await requestNotificationPermission();
         }
+
+        pomodoroStore.resetTimer();
     });
 
     const startTimer = () => {
         if (!isRunning) {
             posthog.capture('Timer Started', {timer, isBreak});
             pomodoroStore.startTimer();
-            intervalId = setInterval(() => {
-                pomodoroStore.updateTimer();
-            }, 1000);
         }
     };
 
     const stopTimer = () => {
-        if (intervalId) {
-            clearInterval(intervalId);
-            intervalId = null;
+        if (isRunning) {
             posthog.capture('Timer Stopped', {timer, isBreak});
             pomodoroStore.stopTimer();
         }
@@ -58,9 +55,7 @@
     };
 
     onDestroy(() => {
-        if (intervalId) {
-            clearInterval(intervalId);
-        }
+        pomodoroStore.stopTimer();
     });
 </script>
 
@@ -72,6 +67,7 @@
 <TimerDisplay time={timer}/>
 
 <TimerControls
+        {isRunning}
         onStart={startTimer}
         onStop={stopTimer}
         onReset={() => pomodoroStore.resetTimer()}
