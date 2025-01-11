@@ -3,22 +3,15 @@
     import {pomodoroStore} from '$lib/stores/pomodoro';
     import {formatTime} from '$lib/utils/time';
     import {browser} from "$app/environment";
+    import {afterNavigate, beforeNavigate} from "$app/navigation";
     import posthog from "posthog-js";
 
     let {children} = $props();
 
-    export const load = async () => {
-
-        if (browser) {
-            posthog.init(
-                'phc_4tZINr2yvf43MmLi358AOmCcXhWEZFnEGujgdPZTiLF',
-                {
-                    api_host: 'https://eu.i.posthog.com',
-                    person_profiles: 'always',
-                }
-            )
-        }
-    };
+    if (browser) {
+        beforeNavigate(() => posthog.capture('$pageleave'));
+        afterNavigate(() => posthog.capture('$pageview'));
+    }
 
     $effect(() => {
         if (browser) {
