@@ -65,7 +65,7 @@
                aria-label="GitHub">
                 <img src="/github.svg" alt="GitHub" loading="lazy"/>
             </a>
-            <a href="https://www.buymeacoffee.com/yourusername" target="_blank" rel="noopener noreferrer"
+            <a href="https://buymeacoffee.com/markvddam" target="_blank" rel="noopener noreferrer"
                aria-label="Buy Me a Coffee">
                 <img src="/coffee.svg" alt="Buy Me a Coffee" loading="lazy"/>
             </a>
